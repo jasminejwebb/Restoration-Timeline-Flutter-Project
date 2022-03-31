@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:syncfusion_flutter_maps/maps.dart';
+import 'package:timelines/timelines.dart';
 
 void main() {
   runApp(const MyApp());
@@ -25,29 +26,19 @@ class MyApp extends StatelessWidget {
         // is not restarted.
         primarySwatch: Colors.blue,
       ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: const MapAndTimeline(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({Key? key, required this.title}) : super(key: key);
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-  final String title;
+class MapAndTimeline extends StatefulWidget {
+  const MapAndTimeline({Key? key}) : super(key: key);
 
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  State<MapAndTimeline> createState() => _MapAndTimelineState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
+class _MapAndTimelineState extends State<MapAndTimeline> {
   late MapShapeSource _states;
   late MapShapeSource _counties;
   late List<MapModel> _mapData;
@@ -71,7 +62,6 @@ class _MyHomePageState extends State<MyHomePage> {
       maxZoomLevel: 10,
       enableDoubleTapZooming: true,
     );
-    print("Init State Done");
     super.initState();
   }
 
@@ -110,24 +100,25 @@ class _MyHomePageState extends State<MyHomePage> {
                   ],
                 ),
               ),
-              Column(
-                children: [
-                  Text("TEST"),
-                  Text("TEST"),
-                  Text("TEST"),
-                  Text("TEST"),
-                  Text("TEST"),
-                ],
+              Expanded(
+                child: TimelineTile(
+                  oppositeContents: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text('opposite\ncontents'),
+                  ),
+                  contents: Card(
+                    child: Container(
+                      padding: EdgeInsets.all(8.0),
+                      child: Text('contents'),
+                    ),
+                  ),
+                  node: TimelineNode(
+                    indicator: DotIndicator(),
+                    startConnector: SolidLineConnector(),
+                    endConnector: SolidLineConnector(),
+                  ),
+                ),
               ),
-              Column(
-                children: [
-                  Text("TEST"),
-                  Text("TEST"),
-                  Text("TEST"),
-                  Text("TEST"),
-                  Text("TEST"),
-                ],
-              )
             ],
           ),
         ),

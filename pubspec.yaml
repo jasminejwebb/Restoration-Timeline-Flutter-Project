@@ -30,6 +30,7 @@ dependencies:
   flutter:
     sdk: flutter
   syncfusion_flutter_maps: ^19.4.56-beta
+  timelines: ^0.1.0
 
 
 
