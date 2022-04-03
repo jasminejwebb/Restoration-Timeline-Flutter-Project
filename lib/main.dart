@@ -71,7 +71,6 @@ class _MapAndTimelineState extends State<MapAndTimeline> {
                   Expanded(
                     flex: 8,
                     child: Container(
-                      width: MediaQuery.of(context).size.width / 2,
                       child: SfMaps(
                         layers: [
                           MapShapeLayer(
