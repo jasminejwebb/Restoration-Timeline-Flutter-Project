@@ -37,6 +37,7 @@ class _MapAndTimelineState extends State<MapAndTimeline> {
   late MapZoomPanBehavior _zoomPanBehavior;
   List<MapSublayer> _sublayers = [];
   double _year = 1800;
+  late List<Marker> _markers;
   // bool _paused = true;
   @override
   void initState() {
@@ -75,12 +76,25 @@ class _MapAndTimelineState extends State<MapAndTimeline> {
                         layers: [
                           MapShapeLayer(
                             source: _states,
+                            initialMarkersCount: _markers.length,
+                            markerBuilder: (BuildContext context, int index) {
+                              return MapMarker(
+                                latitude: _markers[index].latitude,
+                                longitude: _markers[index].longitude,
+                                iconColor: _markers[index].color,
+                                // iconType: MapIconType.triangle,
+                                child: Icon(
+                                  _markers[index].icon,
+                                  size: 15,
+                                ),
+                              );
+                            },
                             // showDataLabels: true,
                             // legend: MapLegend(MapElement.shape),
                             shapeTooltipBuilder:
                                 (BuildContext context, int index) {
                               return Padding(
-                                  padding: EdgeInsets.all(7),
+                                  padding: EdgeInsets.all(5),
                                   child: Text(_mapData[index].stateCode,
                                       style: TextStyle(color: Colors.white)));
                             },
@@ -234,6 +248,7 @@ class _MapAndTimelineState extends State<MapAndTimeline> {
       primaryValueMapper: (int index) => _mapData[index].stateCode,
       shapeColorValueMapper: (int index) => _mapData[index].color,
     );
+    _markers = _getMarkers(_year);
   }
 
   Widget getCard() {
@@ -259,7 +274,7 @@ class _MapAndTimelineState extends State<MapAndTimeline> {
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 200),
           curve: Curves.ease,
-          padding: EdgeInsets.all(isHovering ? 45 : 30),
+          padding: EdgeInsets.all(isHovering ? 4 : 3),
           decoration: BoxDecoration(
             color: isHovering ? Colors.indigoAccent : Colors.green,
             borderRadius: BorderRadius.circular(15),
@@ -274,32 +289,128 @@ class _MapAndTimelineState extends State<MapAndTimeline> {
   }
 
   Widget getTimeline() {
-    return FixedTimeline.tileBuilder(
-      builder: TimelineTileBuilder.connected(
-        connectionDirection: ConnectionDirection.after,
-        itemCount: 1,
-        contentsBuilder: (_, index) {
-          return Padding(
-              padding: EdgeInsets.only(left: 8.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  getCard(),
-                ],
-              ));
-        },
-        indicatorBuilder: (_, index) {
-          return const OutlinedDotIndicator(
-            borderWidth: 2.5,
-          );
-        },
-        connectorBuilder: (_, index, __) => const SolidLineConnector(
-          color: Colors.red,
-        ),
+    return Container(
+      child: Column(
+        children: [
+          TimelineTile(
+            contents: Card(
+              child: Container(
+                padding: EdgeInsets.all(8.0),
+                child: Text('1830'),
+              ),
+            ),
+            node: TimelineNode(
+              indicator: ContainerIndicator(
+                child: Container(
+                  width: 15.0,
+                  height: 15.0,
+                  color: Colors.blue,
+                ),
+              ),
+              startConnector: SolidLineConnector(),
+              endConnector: SolidLineConnector(),
+            ),
+          ),
+          TimelineTile(
+            oppositeContents: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 8.0),
+              child: Container(
+                child: Column(
+                  children: [
+                    TimelineTile(
+                      oppositeContents: Container(
+                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                        child: getCard(),
+                      ),
+                      node: TimelineNode(
+                        indicator: OutlinedDotIndicator(),
+                        // startConnector: SolidLineConnector(),
+                        endConnector: SolidLineConnector(),
+                      ),
+                    ),
+                    TimelineTile(
+                      oppositeContents: Container(
+                        padding: EdgeInsets.symmetric(vertical: 12.0),
+                        child: Text('contents'),
+                      ),
+                      node: TimelineNode(
+                        indicator: OutlinedDotIndicator(),
+                        startConnector: SolidLineConnector(),
+                        // endConnector: SolidLineConnector(),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            contents: Container(
+                child: Column(
+              children: [
+                TimelineTile(
+                  contents: Container(
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    child: Text('contents'),
+                  ),
+                  node: TimelineNode(
+                    indicator: OutlinedDotIndicator(),
+                    startConnector: SolidLineConnector(),
+                    endConnector: SolidLineConnector(),
+                  ),
+                ),
+                TimelineTile(
+                  contents: Container(
+                    padding: EdgeInsets.symmetric(vertical: 12.0),
+                    child: Text('contents'),
+                  ),
+                  node: TimelineNode(
+                    indicator: OutlinedDotIndicator(),
+                    startConnector: SolidLineConnector(),
+                    endConnector: SolidLineConnector(),
+                  ),
+                ),
+              ],
+            )),
+            node: TimelineNode(
+              indicator: DotIndicator(),
+              startConnector: SolidLineConnector(),
+              endConnector: SolidLineConnector(),
+            ),
+          ),
+          TimelineTile(
+            oppositeContents: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text('opposite\ncontents'),
+            ),
+            contents: Card(
+              child: Container(
+                padding: EdgeInsets.all(8.0),
+                child: Text('contents'),
+              ),
+            ),
+            node: TimelineNode(
+              indicator: DotIndicator(),
+              startConnector: SolidLineConnector(),
+              endConnector: SolidLineConnector(),
+            ),
+          ),
+        ],
       ),
     );
   }
+}
+
+List<Marker> _getMarkers(double year) {
+  List<Marker> markers = [
+    Marker("Test", 1800, Colors.black, 43.5, -77, Icons.church),
+  ];
+
+  List<Marker> currentMarkers = [];
+  for (Marker marker in markers) {
+    if (marker.year <= year) {
+      currentMarkers.add(marker);
+    }
+  }
+  return currentMarkers;
 }
 
 List<MapModel> _getMapData(double year) {
@@ -389,6 +500,17 @@ class MapModel {
   final int year;
   final String stateCode;
   Color color;
+}
+
+class Marker {
+  Marker(this.name, this.year, this.color, this.latitude, this.longitude,
+      this.icon);
+  final String name;
+  final int year;
+  final Color color;
+  final double latitude;
+  final double longitude;
+  final IconData icon;
 }
 
 MapShapeSublayer getStateInvert(MapModel state) {
