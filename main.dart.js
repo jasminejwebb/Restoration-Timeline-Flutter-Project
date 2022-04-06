@@ -52345,7 +52345,7 @@ q=t.p
 return new A.tf(new A.fY(B.b2,A.cx(o,A.C3(A.b([A.ph(A.b([m,A.yY(A.C3(A.b([l,k,j,A.nb(new A.tF(r,new A.ZP(p),1800,1950,150,B.f.h(B.d.au(r)),o),o,s.a.a/3),A.tU(B.d.h(p.y),o,o,o,o,o),A.q7(o,o,o,o,o,B.xJ,o,o,new A.ZQ(p),o,o),A.q7(o,o,o,o,o,B.xG,o,o,new A.ZR(p),o,o)],q),B.aq,B.b7,B.aP),2)],q),B.aq,B.b7,B.aP),A.yY(A.nb(A.a7U(p.Ht(),o,B.aa),1/0,o),1)],q),B.aq,B.Bb,B.aP),o,new A.dw(o,o,n,B.tX,o,o,B.aJ),o,o,o,o),o),o)},
 iH(){var s=this,r=A.aiW(s.y)
 s.e=r
-s.d=new A.Qb("NAME",J.b1(A.a(r,"_mapData")),new A.ZS(s),new A.ZT(s),"maps/states.Joseph Smithon")
+s.d=new A.Qb("NAME",J.b1(A.a(r,"_mapData")),new A.ZS(s),new A.ZT(s),"maps/states.json")
 s.ay(new A.ZU(s))},
 Ht(){var s,r,q,p=null,o=this.c.X(t.w).f,n=A.b([A.tU("\n\n"+B.d.h(this.y)+"\n",p,p,p,p,p),A.Xb(p,A.a89(B.dW,A.a6e(A.cx(p,p,B.cu,p,15,p,p,15)),p),p)],t.p)
 for(s=this.Hy(),r=s.length,q=0;q<s.length;s.length===r||(0,A.J)(s),++q)n.push(s[q])
